@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TaskApplication</string>
+    <string name="short_name">Enter short name here</string>
 </resources>
