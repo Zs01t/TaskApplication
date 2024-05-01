@@ -1,14 +1,21 @@
 package com.example.taskapplication;
 
-import java.text.DateFormat;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Created by thorsten on 21.03.20.
  */
 
-public class Task {
+public class Task implements Parcelable {
 
     // simple ID generator
     private static int MAX_ID = 0;
@@ -69,4 +76,52 @@ public class Task {
         }
         return false;
     }
+
+
+    //implementing Parcelable interface
+
+    protected Task(Parcel in)
+    {
+        this.mShortName = in.readString();
+        this.mDescription = in.readString();
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+
+        try{
+            this.mCreationDate = formatter.parse(in.readString()); ;
+        }
+        catch (ParseException e ){
+            e.printStackTrace();
+        }
+
+        this.mDone = in.readByte() != 0;
+    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(mShortName);
+        dest.writeString(mDescription);
+        dest.writeString(mCreationDate.toString());
+        //Could it be writeBoolean?
+        dest.writeByte((byte)(mDone ? 1 : 0));
+    }
+
+    public  static  final Parcelable.Creator<Task> CREATOR
+        = new Parcelable.Creator<Task>(){
+                @Override
+                public Task createFromParcel(Parcel source){
+                    return new Task(source);
+                }
+
+                @Override
+                public  Task[] newArray(int size){
+                    return new Task[size];
+                }
+            };
+
+
+
 }
