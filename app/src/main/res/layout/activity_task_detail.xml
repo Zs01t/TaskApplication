@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible"
-        app:layout_constraintGuide_percent=".4"
+        app:layout_constraintGuide_percent="0.4"
         tools:visibility="visible" />
 
     <TextView
@@ -112,6 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
+        android:onClick="showDatePickerDialog"
         android:text="Date"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guidline"

@@ -24,12 +24,15 @@ public class Task implements Parcelable {
     private String mShortName;
     private String mDescription;
     private Date mCreationDate;
+
+    private Date mDueDate;
     private boolean mDone;
 
     public Task(String shortName) {
         this.mId = MAX_ID++;
         this.mShortName = shortName;
         this.mCreationDate = GregorianCalendar.getInstance().getTime();
+        this.mDueDate = null;
     }
 
     public int getId() {
@@ -54,6 +57,14 @@ public class Task implements Parcelable {
 
     public Date getCreationDate() {
         return mCreationDate;
+    }
+
+    public Date getDueDate() {
+        return mDueDate;
+    }
+
+    public void setDueDate(Date date) {
+        this.mDueDate = date;
     }
 
     public boolean isDone() {
@@ -84,10 +95,10 @@ public class Task implements Parcelable {
     {
         this.mShortName = in.readString();
         this.mDescription = in.readString();
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
         try{
-            this.mCreationDate = formatter.parse(in.readString()); ;
+            this.mCreationDate = formatter.parse(in.readString());
         }
         catch (ParseException e ){
             e.printStackTrace();
@@ -104,7 +115,7 @@ public class Task implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(mShortName);
         dest.writeString(mDescription);
-        dest.writeString(mCreationDate.toString());
+        dest.writeString(mDueDate.toString());
         //Could it be writeBoolean?
         dest.writeByte((byte)(mDone ? 1 : 0));
     }
@@ -112,16 +123,14 @@ public class Task implements Parcelable {
     public  static  final Parcelable.Creator<Task> CREATOR
         = new Parcelable.Creator<Task>(){
                 @Override
-                public Task createFromParcel(Parcel source){
+                public Task createFromParcel(Parcel source) {
                     return new Task(source);
                 }
 
                 @Override
-                public  Task[] newArray(int size){
+                public  Task[] newArray(int size) {
                     return new Task[size];
                 }
             };
-
-
 
 }
