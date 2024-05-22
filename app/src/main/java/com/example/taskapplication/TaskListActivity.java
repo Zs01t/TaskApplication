@@ -36,6 +36,7 @@ public class TaskListActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.taskRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new TaskItemRecyclerViewAdapter();
         adapter.setItems(tasks);
         recyclerView.setAdapter(adapter);
 

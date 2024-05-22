@@ -14,6 +14,6 @@ public interface TaskRepository {
 
     // TODO: add methods for adding new or updating existing tasks
 
-    public void addTask(Task task);
-    public void updateTask(Task task);
+    void addTask(Task task);
+    void updateTask(Task task);
 }
