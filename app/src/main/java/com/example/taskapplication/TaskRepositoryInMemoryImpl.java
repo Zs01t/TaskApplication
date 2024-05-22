@@ -55,4 +55,21 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
             }
         }
     }
+
+    @Override
+    public void addTask(Task task) {
+        mTasks.add(task);
+    }
+
+    @Override
+    public void updateTask(Task task) {
+        int id = task.getId();
+
+        for(int i = 0; i < mTasks.size(); i++) {
+            if(mTasks.get(i).getId() == id) {
+                mTasks.set(i, task);
+            }
+        }
+    }
+
 }
