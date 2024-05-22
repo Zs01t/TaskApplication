@@ -6,6 +6,8 @@ android {
     namespace = "com.example.taskapplication"
     compileSdk = 34
 
+
+
     defaultConfig {
         applicationId = "com.example.taskapplication"
         minSdk = 24
@@ -29,6 +31,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+
 }
 
 dependencies {
