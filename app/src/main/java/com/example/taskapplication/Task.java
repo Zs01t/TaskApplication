@@ -115,7 +115,7 @@ public class Task implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(mShortName);
         dest.writeString(mDescription);
-        dest.writeString(mDueDate.toString());
+        dest.writeString(mDueDate != null ? mDueDate.toString() : "OPEN ISSUE");
         //Could it be writeBoolean?
         dest.writeByte((byte)(mDone ? 1 : 0));
     }

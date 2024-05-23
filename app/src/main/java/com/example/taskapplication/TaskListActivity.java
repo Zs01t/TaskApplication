@@ -2,6 +2,7 @@ package com.example.taskapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,9 +25,15 @@ public class TaskListActivity extends AppCompatActivity {
 
     //this is an interface of a repository
     TaskRepository taskRepo;
-
     private TaskItemRecyclerViewAdapter adapter;
     private List<Task> tasks;
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putParcelableArrayList("LIST_STATE", new ArrayList<>(tasks));
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,5 +60,13 @@ public class TaskListActivity extends AppCompatActivity {
             }
         });
 
+        if(savedInstanceState != null) {
+            tasks = savedInstanceState.getParcelableArrayList("LIST_STATE");
+
+            for(int i = 0; i < tasks.size(); i++) {
+
+
+            }
+        }
     }
 }

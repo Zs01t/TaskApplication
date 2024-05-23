@@ -1,7 +1,9 @@
 package com.example.taskapplication;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskItemRecyclerViewAdapter  extends RecyclerView.Adapter<TaskViewHolder> {
-
 
     private List<Task> taskList;
     public TaskItemRecyclerViewAdapter() {
@@ -37,9 +38,11 @@ public class TaskItemRecyclerViewAdapter  extends RecyclerView.Adapter<TaskViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final TaskViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task item = taskList.get(position);
-        holder.bindItem(item);
+        holder.binding.taskNameTextView.setText(item.getShortName());
+        holder.binding.taskDescTextView.setText(item.getDescription());
+        holder.binding.checkBoxDone.setChecked(item.isDone());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.taskapplication;
 
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
@@ -17,7 +18,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,6 +29,8 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
     private Button mSaveButton;
     private Task mCurrentTask;
     private Calendar calendar;
+
+    private Date dueDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +81,18 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                        String selectedDate = dayOfMonth + "/" + month + "/" + year;
+                        String selectedDate = dayOfMonth + "/" + (month+1) + "/" + year;
+                        System.out.println(selectedDate);
+
                         ((TextView)findViewById(R.id.textView_Date)).setText(selectedDate);
+
+                        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                        try {
+                            dueDate = df.parse(selectedDate);
+                            System.out.println(dueDate.toString());
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }, year, month, day);
 
@@ -104,16 +119,18 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
             boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
             mCurrentTask.setDone(isDone);
 
-            String dueDateTextView = ((TextView)findViewById(R.id.textView_Date)).getText().toString();
+//            String dueDateTextView = ((TextView)findViewById(R.id.textView_Date)).getText().toString();
+//
+//            String[] splitDate = dueDateTextView.split("/");
+//
+//            Date date = new Date(Integer.parseInt(splitDate[2]) , Integer.parseInt(splitDate[1]), Integer.parseInt(splitDate[0]));
+//            System.out.println("day: " + splitDate[0]);
+//            System.out.println("month: " + splitDate[1]);
+//            System.out.println("year: " + splitDate[2]);
+//
+//            mCurrentTask.setDueDate(date);
+            mCurrentTask.setDueDate(dueDate);
 
-            String[] splitDate = dueDateTextView.split("/");
-
-            Date date = new Date(Integer.parseInt(splitDate[2]) , Integer.parseInt(splitDate[1]), Integer.parseInt(splitDate[0]));
-            System.out.println("day: " + splitDate[0]);
-            System.out.println("month: " + splitDate[1]);
-            System.out.println("year: " + splitDate[2]);
-
-            mCurrentTask.setDueDate(date);
             //String dateToString = DateFormat.getDateInstance().format(date);
             //((TextView)findViewById(R.id.textView_Date)).setText(dateToString);
 

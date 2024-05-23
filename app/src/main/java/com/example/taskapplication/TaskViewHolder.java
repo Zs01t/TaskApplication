@@ -1,6 +1,7 @@
 package com.example.taskapplication;
 
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
 
 
     public final TaskitemBinding binding;
+
     //public TextView taskNameTextView;
     //public TextView taskDescTextView;
 
@@ -28,6 +30,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
     public void bindItem(Task item) {
         binding.taskNameTextView.setText(item.getShortName());
         binding.taskDescTextView.setText(item.getDescription());
+        binding.checkBoxDone.setChecked(item.isDone());
     }
 }
 
