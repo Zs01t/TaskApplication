@@ -26,6 +26,7 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
     private Button mSaveButton;
     private Task mCurrentTask;
     private Calendar calendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,13 +60,7 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
             String stringDate = day + "/" + month + "/" + year;
 
             ((TextView)findViewById(R.id.textView_Date)).setText(stringDate);
-
-
             //boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
-
-
-
-
 
         }
 
@@ -121,6 +116,8 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
             mCurrentTask.setDueDate(date);
             //String dateToString = DateFormat.getDateInstance().format(date);
             //((TextView)findViewById(R.id.textView_Date)).setText(dateToString);
+
+
         }
     }
 }

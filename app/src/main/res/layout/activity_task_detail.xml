@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible"
-        app:layout_constraintGuide_percent="0.4"
+        app:layout_constraintGuide_percent="0.29"
         tools:visibility="visible" />
 
     <TextView
@@ -22,12 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="128dp"
         android:rotationX="0"
         android:text="Task"
         android:textAlignment="viewStart"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/guidline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,10 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="84dp"
         android:text="Description"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/guidline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -50,10 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="132dp"
         android:text="Date"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/guidline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -63,10 +57,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="128dp"
         android:text="Done"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/guidline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -81,28 +73,32 @@
 
     <EditText
         android:id="@+id/editText_Name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
         android:alpha="0.5"
         android:ems="10"
         android:hint="Enter short name here"
         android:inputType="text"
         android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editText_Description"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="13dp"
+        android:layout_marginEnd="8dp"
         android:alpha="0.5"
         android:ems="10"
         android:hint="Enter description here"
         android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidline"
         app:layout_constraintTop_toBottomOf="@+id/editText_Name" />
 
@@ -122,12 +118,10 @@
         android:id="@+id/button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="164dp"
         android:layout_marginEnd="23dp"
         android:layout_marginBottom="16dp"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guidline" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

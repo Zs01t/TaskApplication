@@ -1,7 +1,10 @@
 package com.example.taskapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,6 +42,15 @@ public class TaskListActivity extends AppCompatActivity {
         adapter = new TaskItemRecyclerViewAdapter();
         adapter.setItems(tasks);
         recyclerView.setAdapter(adapter);
+
+        Button addTaskButton = findViewById(R.id.button);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TaskListActivity.this, TaskDetailActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
