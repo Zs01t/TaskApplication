@@ -58,14 +58,17 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
             ((TextView)findViewById(R.id.editText_Name)).setText(mCurrentTask.getShortName());
             ((TextView)findViewById(R.id.editText_Description)).setText(mCurrentTask.getDescription());
 
-            int day = mCurrentTask.getDueDate().getDay();
-            int month = mCurrentTask.getDueDate().getMonth();
-            int year = mCurrentTask.getDueDate().getYear();
-
+            //stupid code
+            Date date = mCurrentTask.getDueDate();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            int month = cal.get(Calendar.MONTH)+1;
+            int year = cal.get(Calendar.YEAR);
             String stringDate = day + "/" + month + "/" + year;
 
             ((TextView)findViewById(R.id.textView_Date)).setText(stringDate);
-            //boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
+            boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
 
         }
 
