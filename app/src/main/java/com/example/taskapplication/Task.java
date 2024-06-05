@@ -35,6 +35,15 @@ public class Task implements Parcelable {
         this.mDueDate = null;
     }
 
+    public Task(int id, String name, String description, Date date, Date date1, boolean isDone) {
+        mId = id;
+        mShortName = name;
+        mDescription = description;
+        mCreationDate = date;
+        mDueDate = date1;
+        mDone = isDone;
+    }
+
     public int getId() {
         return this.mId;
     }

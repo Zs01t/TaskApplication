@@ -24,9 +24,12 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 public class TaskDetailActivity extends AppCompatActivity{
 
+    TaskRepository taskRepo;
     private Button mSaveButton;
     private Task mCurrentTask;
     private Calendar calendar;
@@ -37,6 +40,9 @@ public class TaskDetailActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
+
+
+        taskRepo = TaskRepositoryDatabaseImpl.getInstance(this);
 
         //implementing the save button functionality
         mSaveButton = findViewById(R.id.button_save);
@@ -54,7 +60,7 @@ public class TaskDetailActivity extends AppCompatActivity{
                     mCurrentTask.setDone(isDone);
 
                     mCurrentTask.setDueDate(dueDate);
-
+                    taskRepo.addTask(mCurrentTask);
                 }
             }
         });
@@ -63,18 +69,16 @@ public class TaskDetailActivity extends AppCompatActivity{
         Intent inIntent = getIntent();
 
         //reloading current Task if something happens
-        if(savedInstanceState != null || inIntent != null)
+        if(savedInstanceState != null || Objects.equals(inIntent.getStringExtra("from"), "modifyTask"))
         {
-
-            if(inIntent != null)
-            {
-                mCurrentTask = inIntent.getParcelableExtra("taskToBeModified");
-            }
-            else
+            if(savedInstanceState != null)
             {
                 mCurrentTask = savedInstanceState.getParcelable("CURRENT_TASK");
             }
-
+            else
+            {
+                mCurrentTask = inIntent.getParcelableExtra("taskToBeModified");
+            }
 
             ((TextView)findViewById(R.id.editText_Name)).setText(mCurrentTask.getShortName());
             ((TextView)findViewById(R.id.editText_Description)).setText(mCurrentTask.getDescription());

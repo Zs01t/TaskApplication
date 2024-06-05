@@ -42,7 +42,7 @@ public class TaskListActivity extends AppCompatActivity {
 
 
         //The repository gets created and then from it we load the tasks
-        taskRepo = TaskRepositoryInMemoryImpl.getInstance();
+        taskRepo = TaskRepositoryDatabaseImpl.getInstance(this);
         tasks = taskRepo.loadTasks();
 
         RecyclerView recyclerView = findViewById(R.id.taskRecyclerView);
@@ -56,17 +56,16 @@ public class TaskListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TaskListActivity.this, TaskDetailActivity.class);
+                intent.putExtra("from", "addTask");
                 startActivity(intent);
+
+
             }
         });
 
         if(savedInstanceState != null) {
             tasks = savedInstanceState.getParcelableArrayList("LIST_STATE");
 
-            for(int i = 0; i < tasks.size(); i++) {
-
-
-            }
         }
     }
 }
