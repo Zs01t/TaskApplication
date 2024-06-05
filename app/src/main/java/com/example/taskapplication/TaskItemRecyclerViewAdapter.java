@@ -1,5 +1,6 @@
 package com.example.taskapplication;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,14 @@ public class TaskItemRecyclerViewAdapter  extends RecyclerView.Adapter<TaskViewH
         holder.binding.taskNameTextView.setText(item.getShortName());
         holder.binding.taskDescTextView.setText(item.getDescription());
         holder.binding.checkBoxDone.setChecked(item.isDone());
+
+        //creating intent for modifying the task in the recyclerview
+        holder.itemView.setOnClickListener(v -> {
+            Intent modifyTaskIntent = new Intent(v.getContext(), TaskDetailActivity.class);
+            modifyTaskIntent.putExtra("taskToBeModified", item);
+            v.getContext().startActivity(modifyTaskIntent);
+        });
+
     }
 
 }

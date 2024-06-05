@@ -1,6 +1,7 @@
 package com.example.taskapplication;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -24,7 +25,7 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TaskDetailActivity extends AppCompatActivity implements View.OnClickListener{
+public class TaskDetailActivity extends AppCompatActivity{
 
     private Button mSaveButton;
     private Task mCurrentTask;
@@ -39,26 +40,45 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
 
         //implementing the save button functionality
         mSaveButton = findViewById(R.id.button_save);
-        mSaveButton.setOnClickListener(this);
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = ((EditText)findViewById(R.id.editText_Name)).getText().toString();
+                String desc = ((EditText)findViewById(R.id.editText_Description)).getText().toString();
+                if(!name.isEmpty() && !desc.isEmpty())
+                {
+                    //in the constructor the date is getting set
+                    mCurrentTask = new Task(name);
+                    mCurrentTask.setDescription(desc);
+                    boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
+                    mCurrentTask.setDone(isDone);
 
+                    mCurrentTask.setDueDate(dueDate);
 
+                }
+            }
+        });
 
         calendar = Calendar.getInstance();
+        Intent inIntent = getIntent();
 
         //reloading current Task if something happens
-        if(savedInstanceState != null)
+        if(savedInstanceState != null || inIntent != null)
         {
-            //String name = ((EditText)findViewById(R.id.editText_Name)).getText().toString();
-            //String desc = ((EditText)findViewById(R.id.editText_Description)).getText().toString();
 
-            //is the line below important? maybe, because if it is commented out the app crashes...
-            //putting a breakpoint above this line doesn't help though
-            mCurrentTask = savedInstanceState.getParcelable("CURRENT_TASK");
+            if(inIntent != null)
+            {
+                mCurrentTask = inIntent.getParcelableExtra("taskToBeModified");
+            }
+            else
+            {
+                mCurrentTask = savedInstanceState.getParcelable("CURRENT_TASK");
+            }
+
 
             ((TextView)findViewById(R.id.editText_Name)).setText(mCurrentTask.getShortName());
             ((TextView)findViewById(R.id.editText_Description)).setText(mCurrentTask.getDescription());
 
-            //stupid code
             Date date = mCurrentTask.getDueDate();
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
@@ -71,6 +91,7 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
             boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
 
         }
+
 
     }
 
@@ -109,35 +130,4 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    //maybe I should make it an anonymous function inside OnCreate(), so that way I don't need to implement the View.OneClickListener interface
-    @Override
-    public void onClick(View v) {
-        String name = ((EditText)findViewById(R.id.editText_Name)).getText().toString();
-        String desc = ((EditText)findViewById(R.id.editText_Description)).getText().toString();
-        if(!name.isEmpty() && !desc.isEmpty())
-        {
-            //in the constructor the date is getting set
-            mCurrentTask = new Task(name);
-            mCurrentTask.setDescription(desc);
-            boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
-            mCurrentTask.setDone(isDone);
-
-//            String dueDateTextView = ((TextView)findViewById(R.id.textView_Date)).getText().toString();
-//
-//            String[] splitDate = dueDateTextView.split("/");
-//
-//            Date date = new Date(Integer.parseInt(splitDate[2]) , Integer.parseInt(splitDate[1]), Integer.parseInt(splitDate[0]));
-//            System.out.println("day: " + splitDate[0]);
-//            System.out.println("month: " + splitDate[1]);
-//            System.out.println("year: " + splitDate[2]);
-//
-//            mCurrentTask.setDueDate(date);
-            mCurrentTask.setDueDate(dueDate);
-
-            //String dateToString = DateFormat.getDateInstance().format(date);
-            //((TextView)findViewById(R.id.textView_Date)).setText(dateToString);
-
-
-        }
-    }
 }

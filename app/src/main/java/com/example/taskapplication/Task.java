@@ -95,10 +95,13 @@ public class Task implements Parcelable {
     {
         this.mShortName = in.readString();
         this.mDescription = in.readString();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+
+        String dueDateInString = in.readString();
+        String creationDateInString = in.readString();
 
         try{
-            this.mCreationDate = formatter.parse(in.readString());
+            this.mDueDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(dueDateInString);
+            this.mCreationDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(creationDateInString);
         }
         catch (ParseException e ){
             e.printStackTrace();
@@ -116,6 +119,7 @@ public class Task implements Parcelable {
         dest.writeString(mShortName);
         dest.writeString(mDescription);
         dest.writeString(mDueDate != null ? mDueDate.toString() : "OPEN ISSUE");
+        dest.writeString(mCreationDate != null ? mCreationDate.toString() : "OPEN ISSUE");
         //Could it be writeBoolean?
         dest.writeByte((byte)(mDone ? 1 : 0));
     }

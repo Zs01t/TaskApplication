@@ -1,6 +1,7 @@
 package com.example.taskapplication;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
         Task myTask = new Task("Empty the trash");
         myTask.setDescription("Someone has to get the dirty jobs done...");
         myTask.setDone(true);
+        myTask.setDueDate(new Date(2024, 6, 10));
         mTasks.add(myTask);
         mTasks.add(new Task("Groceries"));
         mTasks.add(new Task("Call parents"));
