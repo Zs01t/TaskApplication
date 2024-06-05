@@ -61,6 +61,8 @@ public class TaskDetailActivity extends AppCompatActivity{
 
                     mCurrentTask.setDueDate(dueDate);
                     taskRepo.addTask(mCurrentTask);
+                    Intent backToListIntent = new Intent(TaskDetailActivity.this, TaskListActivity.class);
+                    startActivity(backToListIntent);
                 }
             }
         });
