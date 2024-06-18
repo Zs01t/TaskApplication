@@ -25,6 +25,7 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class TaskDetailActivity extends AppCompatActivity{
@@ -33,72 +34,89 @@ public class TaskDetailActivity extends AppCompatActivity{
     private Button mSaveButton;
     private Task mCurrentTask;
     private Calendar calendar;
-
     private Date dueDate;
+    private boolean editMode;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
-
-
+        //for the datepicker but also for conversions
+        calendar = Calendar.getInstance();
         taskRepo = TaskRepositoryDatabaseImpl.getInstance(this);
-
         //implementing the save button functionality
         mSaveButton = findViewById(R.id.button_save);
+        //we check if we are at this activity because another activity sent an intent
+        Intent inIntent = getIntent();
+
+        //if we came from the task list, then the taskToBeModified is not empty
+        mCurrentTask = inIntent.getParcelableExtra("taskToBeModified");
+        if (mCurrentTask == null) {
+            mCurrentTask = new Task();
+            editMode = false;
+        }
+        mSaveButton.setText(editMode ? "Confirm changes" : "Save");
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = ((EditText)findViewById(R.id.editText_Name)).getText().toString();
                 String desc = ((EditText)findViewById(R.id.editText_Description)).getText().toString();
-                if(!name.isEmpty() && !desc.isEmpty())
+                String dueDateInString = ((TextView)findViewById(R.id.textView_Date)).getText().toString();
+                if(!name.isEmpty() && !dueDateInString.isEmpty())
                 {
-                    //in the constructor the date is getting set
-                    mCurrentTask = new Task(name);
+                    mCurrentTask.setShortName(name);
                     mCurrentTask.setDescription(desc);
                     boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
                     mCurrentTask.setDone(isDone);
-
-                    mCurrentTask.setDueDate(dueDate);
+                    if(editMode)
+                    {
+                        //in this case the date is already given so we need to get that value from the date Textview and set it
+                        //the date is a string and its format is dd/mm/yyyy
+                        //we need to transform this back to a Date
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                        try {
+                            mCurrentTask.setDueDate(format.parse(dueDateInString));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else
+                    {
+                        mCurrentTask.setDueDate(dueDate);
+                    }
                     taskRepo.addTask(mCurrentTask);
+                    //here, it would be better if we called the finish() method,
+                    //but the task list only updates if we recreate the list activity
+                    //TODO: make the list responsive with observer(?)
                     Intent backToListIntent = new Intent(TaskDetailActivity.this, TaskListActivity.class);
                     startActivity(backToListIntent);
+
                 }
             }
         });
 
-        calendar = Calendar.getInstance();
-        Intent inIntent = getIntent();
 
-        //reloading current Task if something happens
-        if(savedInstanceState != null || Objects.equals(inIntent.getStringExtra("from"), "modifyTask"))
+        //reloading current Task if something happens (we rotated the phone) or if you are modifying an existing task
+        //the savedInstanceState signals this
+        if(savedInstanceState != null)
         {
-            if(savedInstanceState != null)
-            {
-                mCurrentTask = savedInstanceState.getParcelable("CURRENT_TASK");
-            }
-            else
-            {
-                mCurrentTask = inIntent.getParcelableExtra("taskToBeModified");
-            }
-
             ((TextView)findViewById(R.id.editText_Name)).setText(mCurrentTask.getShortName());
             ((TextView)findViewById(R.id.editText_Description)).setText(mCurrentTask.getDescription());
 
             Date date = mCurrentTask.getDueDate();
             Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-            int month = cal.get(Calendar.MONTH)+1;
-            int year = cal.get(Calendar.YEAR);
-            String stringDate = day + "/" + month + "/" + year;
+            if (editMode) {
+                cal.setTime(date);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                int month = cal.get(Calendar.MONTH) + 1;
+                int year = cal.get(Calendar.YEAR);
+                String stringDate = day + "/" + month + "/" + year;
 
-            ((TextView)findViewById(R.id.textView_Date)).setText(stringDate);
-            boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
-
+                ((TextView) findViewById(R.id.textView_Date)).setText(stringDate);
+            }
+            ((CheckBox)findViewById(R.id.checkBox_Done)).setChecked(mCurrentTask.isDone());
         }
-
-
     }
 
     public void showDatePickerDialog(View view) {
@@ -107,9 +125,11 @@ public class TaskDetailActivity extends AppCompatActivity{
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
+                new DatePickerDialog.OnDateSetListener()
+                {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+                    {
 
                         String selectedDate = dayOfMonth + "/" + (month+1) + "/" + year;
                         System.out.println(selectedDate);
@@ -119,7 +139,7 @@ public class TaskDetailActivity extends AppCompatActivity{
                         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                         try {
                             dueDate = df.parse(selectedDate);
-                            System.out.println(dueDate.toString());
+                            //System.out.println(dueDate.toString());
                         } catch (ParseException e) {
                             throw new RuntimeException(e);
                         }
@@ -132,7 +152,6 @@ public class TaskDetailActivity extends AppCompatActivity{
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putParcelable("CURRENT_TASK", (Parcelable) mCurrentTask);
-
         super.onSaveInstanceState(savedInstanceState);
     }
 

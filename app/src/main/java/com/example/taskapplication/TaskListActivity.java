@@ -56,9 +56,8 @@ public class TaskListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TaskListActivity.this, TaskDetailActivity.class);
-                intent.putExtra("from", "addTask");
+         //       intent.putExtra("from", "addTask");
                 startActivity(intent);
-
 
             }
         });

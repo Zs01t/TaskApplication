@@ -49,7 +49,7 @@ public class TaskItemRecyclerViewAdapter  extends RecyclerView.Adapter<TaskViewH
         holder.itemView.setOnClickListener(v -> {
             Intent modifyTaskIntent = new Intent(v.getContext(), TaskDetailActivity.class);
             modifyTaskIntent.putExtra("taskToBeModified", item);
-            modifyTaskIntent.putExtra("from", "modifyTask");
+//            modifyTaskIntent.putExtra("from", "modifyTask");
             v.getContext().startActivity(modifyTaskIntent);
         });
 

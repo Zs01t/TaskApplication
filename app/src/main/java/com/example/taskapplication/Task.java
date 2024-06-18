@@ -28,8 +28,14 @@ public class Task implements Parcelable {
     private Date mDueDate;
     private boolean mDone;
 
+    public Task() {
+//        this.mId = MAX_ID++;
+//        this.mShortName = shortName;
+        this.mCreationDate = GregorianCalendar.getInstance().getTime();
+        this.mDueDate = null;
+    }
     public Task(String shortName) {
-        this.mId = MAX_ID++;
+//        this.mId = MAX_ID++;
         this.mShortName = shortName;
         this.mCreationDate = GregorianCalendar.getInstance().getTime();
         this.mDueDate = null;

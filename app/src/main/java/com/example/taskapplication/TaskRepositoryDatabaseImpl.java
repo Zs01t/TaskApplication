@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -102,26 +103,31 @@ public class TaskRepositoryDatabaseImpl extends SQLiteOpenHelper implements Task
     @Override
     public void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = createContentValues(task);
+
+        db.insert(TABLE_TASKS, null, values);
+
+
+loadTasks();
+
+        db.close();
+    }
+
+    @NonNull
+    private static ContentValues createContentValues(Task task) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, task.getShortName());
         values.put(COLUMN_DESCRIPTION, task.getDescription());
         values.put(COLUMN_CREATION_DATE, task.getCreationDate().getTime());
         values.put(COLUMN_DUE_DATE, task.getDueDate().getTime());
         values.put(COLUMN_IS_DONE, task.isDone() ? 1 : 0); // Storing boolean as integer
-
-        db.insert(TABLE_TASKS, null, values);
-        db.close();
+        return values;
     }
 
     @Override
     public void updateTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, task.getShortName());
-        values.put(COLUMN_DESCRIPTION, task.getDescription());
-        values.put(COLUMN_CREATION_DATE, task.getCreationDate().getTime());
-        values.put(COLUMN_DUE_DATE, task.getDueDate().getTime());
-        values.put(COLUMN_IS_DONE, task.isDone() ? 1 : 0); // Storing boolean as integer
+        ContentValues values = createContentValues(task);
 
         db.update(TABLE_TASKS, values, COLUMN_ID + " = ?", new String[]{String.valueOf(task.getId())});
         db.close();
