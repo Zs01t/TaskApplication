@@ -4,6 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,17 +19,26 @@ import java.util.Locale;
  * Created by thorsten on 21.03.20.
  */
 
+@Entity
 public class Task implements Parcelable {
 
     // simple ID generator
-    private static int MAX_ID = 0;
+    //private static int MAX_ID = 0;
 
+    //auto-increment included
+    @PrimaryKey
     private int mId;
+
+    @ColumnInfo(name = "short_name")
     private String mShortName;
+    @ColumnInfo(name = "description")
     private String mDescription;
+    @ColumnInfo(name = "creation_date")
     private Date mCreationDate;
 
+    @ColumnInfo(name = "due_date")
     private Date mDueDate;
+    @ColumnInfo(name = "done")
     private boolean mDone;
 
     public Task() {
@@ -53,7 +66,7 @@ public class Task implements Parcelable {
     public int getId() {
         return this.mId;
     }
-
+    public void setId(int id) { this.mId = id; }
     public String getShortName() {
         return mShortName;
     }
@@ -73,7 +86,7 @@ public class Task implements Parcelable {
     public Date getCreationDate() {
         return mCreationDate;
     }
-
+    public void setCreationDate(Date date) { this.mCreationDate = date;}
     public Date getDueDate() {
         return mDueDate;
     }

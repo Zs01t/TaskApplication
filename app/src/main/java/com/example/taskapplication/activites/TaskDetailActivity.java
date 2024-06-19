@@ -1,8 +1,8 @@
-package com.example.taskapplication;
+package com.example.taskapplication.activites;
 
+import android.app.Application;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
@@ -12,21 +12,20 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.example.taskapplication.R;
+import com.example.taskapplication.Task;
+import com.example.taskapplication.repositories.TaskRepository;
+import com.example.taskapplication.repositories.TaskRepositoryDatabaseImpl;
+import com.example.taskapplication.repositories.TaskRepositoryRoomImpl;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class TaskDetailActivity extends AppCompatActivity{
 
@@ -44,7 +43,8 @@ public class TaskDetailActivity extends AppCompatActivity{
         setContentView(R.layout.activity_task_detail);
         //for the datepicker but also for conversions
         calendar = Calendar.getInstance();
-        taskRepo = TaskRepositoryDatabaseImpl.getInstance(this);
+        //we need it to save or update the database
+        taskRepo = new TaskRepositoryRoomImpl(this);
         //implementing the save button functionality
         mSaveButton = findViewById(R.id.button_save);
         //we check if we are at this activity because another activity sent an intent

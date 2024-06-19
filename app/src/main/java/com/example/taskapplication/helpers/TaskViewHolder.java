@@ -1,4 +1,4 @@
-package com.example.taskapplication;
+package com.example.taskapplication.helpers;
 
 import android.view.View;
 import android.widget.CheckBox;
@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 // Import the generated binding class
+import com.example.taskapplication.Task;
 import com.example.taskapplication.databinding.TaskitemBinding;
 
 public class TaskViewHolder extends RecyclerView.ViewHolder {

@@ -1,4 +1,4 @@
-package com.example.taskapplication;
+package com.example.taskapplication.repositories;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
+import com.example.taskapplication.Task;
 
 import java.util.ArrayList;
 import java.util.Date;

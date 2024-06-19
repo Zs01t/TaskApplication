@@ -1,14 +1,14 @@
-package com.example.taskapplication;
+package com.example.taskapplication.helpers;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.taskapplication.Task;
+import com.example.taskapplication.activites.TaskDetailActivity;
 import com.example.taskapplication.databinding.TaskitemBinding;
 
 import java.util.ArrayList;

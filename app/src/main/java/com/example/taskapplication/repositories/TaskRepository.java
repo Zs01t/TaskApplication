@@ -1,4 +1,6 @@
-package com.example.taskapplication;
+package com.example.taskapplication.repositories;
+
+import com.example.taskapplication.Task;
 
 import java.util.List;
 

@@ -1,22 +1,22 @@
-package com.example.taskapplication;
+package com.example.taskapplication.activites;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DateFormat;
+import com.example.taskapplication.R;
+import com.example.taskapplication.Task;
+import com.example.taskapplication.helpers.TaskItemRecyclerViewAdapter;
+import com.example.taskapplication.repositories.TaskRepository;
+import com.example.taskapplication.repositories.TaskRepositoryDatabaseImpl;
+import com.example.taskapplication.repositories.TaskRepositoryRoomImpl;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -42,7 +42,7 @@ public class TaskListActivity extends AppCompatActivity {
 
 
         //The repository gets created and then from it we load the tasks
-        taskRepo = TaskRepositoryDatabaseImpl.getInstance(this);
+        taskRepo = new TaskRepositoryRoomImpl(this);
         tasks = taskRepo.loadTasks();
 
         RecyclerView recyclerView = findViewById(R.id.taskRecyclerView);
