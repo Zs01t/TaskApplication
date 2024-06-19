@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
@@ -25,28 +26,28 @@ public class Task implements Parcelable {
     // simple ID generator
     //private static int MAX_ID = 0;
 
-    //auto-increment included
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int mId;
-
     @ColumnInfo(name = "short_name")
     private String mShortName;
     @ColumnInfo(name = "description")
     private String mDescription;
     @ColumnInfo(name = "creation_date")
     private Date mCreationDate;
-
     @ColumnInfo(name = "due_date")
     private Date mDueDate;
     @ColumnInfo(name = "done")
     private boolean mDone;
 
+    @Ignore
     public Task() {
 //        this.mId = MAX_ID++;
 //        this.mShortName = shortName;
         this.mCreationDate = GregorianCalendar.getInstance().getTime();
         this.mDueDate = null;
     }
+
+    @Ignore
     public Task(String shortName) {
 //        this.mId = MAX_ID++;
         this.mShortName = shortName;
@@ -54,13 +55,14 @@ public class Task implements Parcelable {
         this.mDueDate = null;
     }
 
-    public Task(int id, String name, String description, Date date, Date date1, boolean isDone) {
-        mId = id;
-        mShortName = name;
-        mDescription = description;
-        mCreationDate = date;
-        mDueDate = date1;
-        mDone = isDone;
+
+    public Task(int mId, String mShortName, String mDescription, Date mCreationDate, Date mDueDate, boolean mDone) {
+        this.mId = mId;
+        this.mShortName = mShortName;
+        this.mDescription = mDescription;
+        this.mCreationDate = mCreationDate;
+        this.mDueDate = mDueDate;
+        this.mDone = mDone;
     }
 
     public int getId() {

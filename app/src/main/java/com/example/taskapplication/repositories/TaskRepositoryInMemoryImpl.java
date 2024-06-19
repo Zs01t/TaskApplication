@@ -1,5 +1,7 @@
 package com.example.taskapplication.repositories;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.taskapplication.Task;
 
 import java.util.ArrayList;
@@ -45,8 +47,8 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
     }
 
     @Override
-    public List<Task> loadTasks() {
-        return mTasks;
+    public LiveData<List<Task>> loadTasks() {
+        return null;
     }
 
     @Override

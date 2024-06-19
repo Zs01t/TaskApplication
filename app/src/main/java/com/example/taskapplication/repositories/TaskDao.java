@@ -1,5 +1,6 @@
 package com.example.taskapplication.repositories;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,7 +14,7 @@ import java.util.List;
 @Dao
 public interface TaskDao {
     @Query("SELECT * FROM task")
-    List<Task> getAll();
+    LiveData<List<Task>> getAll();
     @Insert
     void insert(Task task);
     @Update

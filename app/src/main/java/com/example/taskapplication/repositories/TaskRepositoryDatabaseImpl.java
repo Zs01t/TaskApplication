@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 
 import com.example.taskapplication.Task;
 
@@ -67,31 +68,32 @@ public class TaskRepositoryDatabaseImpl extends SQLiteOpenHelper implements Task
     }
 
     @Override
-    public List<Task> loadTasks() {
-        List<Task> tasks = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_TASKS,
-                new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_DESCRIPTION, COLUMN_CREATION_DATE, COLUMN_DUE_DATE, COLUMN_IS_DONE},
-                null, null, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION));
-                long creationDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_CREATION_DATE));
-                long dueDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_DUE_DATE));
-                boolean isDone = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_DONE)) == 1;
-
-                Task task = new Task(id, name, description, new Date(creationDateMillis), new Date(dueDateMillis), isDone);
-                tasks.add(task);
-            } while (cursor.moveToNext());
-
-            cursor.close();
-        }
-
-        db.close();
-        return tasks;
+    public LiveData<List<Task>> loadTasks() {
+        return null;
+//        List<Task> tasks = new ArrayList<>();
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.query(TABLE_TASKS,
+//                new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_DESCRIPTION, COLUMN_CREATION_DATE, COLUMN_DUE_DATE, COLUMN_IS_DONE},
+//                null, null, null, null, null);
+//
+//        if (cursor != null && cursor.moveToFirst()) {
+//            do {
+//                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
+//                String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
+//                String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION));
+//                long creationDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_CREATION_DATE));
+//                long dueDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_DUE_DATE));
+//                boolean isDone = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_DONE)) == 1;
+//
+//                Task task = new Task(id, name, description, new Date(creationDateMillis), new Date(dueDateMillis), isDone);
+//                tasks.add(task);
+//            } while (cursor.moveToNext());
+//
+//            cursor.close();
+//        }
+//
+//        db.close();
+        //return tasks;
     }
 
     @Override

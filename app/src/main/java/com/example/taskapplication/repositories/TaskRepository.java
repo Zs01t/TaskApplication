@@ -1,5 +1,7 @@
 package com.example.taskapplication.repositories;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.taskapplication.Task;
 
 import java.util.List;
@@ -10,8 +12,7 @@ import java.util.List;
 
 public interface TaskRepository {
 
-    List<Task> loadTasks();
-
+    LiveData<List<Task>> loadTasks();
     void deleteFinishedTasks();
 
     // TODO: add methods for adding new or updating existing tasks

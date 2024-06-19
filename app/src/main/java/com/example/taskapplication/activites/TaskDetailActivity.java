@@ -34,7 +34,7 @@ public class TaskDetailActivity extends AppCompatActivity{
     private Task mCurrentTask;
     private Calendar calendar;
     private Date dueDate;
-    private boolean editMode;
+    private boolean editMode = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -88,9 +88,7 @@ public class TaskDetailActivity extends AppCompatActivity{
                     taskRepo.addTask(mCurrentTask);
                     //here, it would be better if we called the finish() method,
                     //but the task list only updates if we recreate the list activity
-                    //TODO: make the list responsive with observer(?)
-                    Intent backToListIntent = new Intent(TaskDetailActivity.this, TaskListActivity.class);
-                    startActivity(backToListIntent);
+                    finish();
 
                 }
             }
