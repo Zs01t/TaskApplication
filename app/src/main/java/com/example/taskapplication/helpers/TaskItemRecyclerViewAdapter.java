@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.taskapplication.Task;
 import com.example.taskapplication.activites.TaskDetailActivity;
 import com.example.taskapplication.databinding.TaskitemBinding;
+import com.example.taskapplication.repositories.TaskRepository;
+import com.example.taskapplication.repositories.TaskRepositoryRoomImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
 public class TaskItemRecyclerViewAdapter  extends RecyclerView.Adapter<TaskViewHolder> {
 
     private List<Task> taskList;
+
+    private RecyclerView mRecyclerView;
     public TaskItemRecyclerViewAdapter() {
         taskList = new ArrayList<>();
     }
@@ -29,6 +33,12 @@ public class TaskItemRecyclerViewAdapter  extends RecyclerView.Adapter<TaskViewH
         return taskList.size();
     }
 
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        mRecyclerView = recyclerView;
+    }
 
     @NonNull
     @Override
@@ -49,10 +59,13 @@ public class TaskItemRecyclerViewAdapter  extends RecyclerView.Adapter<TaskViewH
         holder.itemView.setOnClickListener(v -> {
             Intent modifyTaskIntent = new Intent(v.getContext(), TaskDetailActivity.class);
             modifyTaskIntent.putExtra("taskToBeModified", item);
-//            modifyTaskIntent.putExtra("from", "modifyTask");
             v.getContext().startActivity(modifyTaskIntent);
         });
 
+        holder.binding.checkBoxDone.setOnClickListener(v -> {
+            TaskRepository tmp = new TaskRepositoryRoomImpl(mRecyclerView.getContext());
+            item.setDone(holder.binding.checkBoxDone.isChecked());
+            tmp.updateTask(item);
+        });
     }
-
 }
