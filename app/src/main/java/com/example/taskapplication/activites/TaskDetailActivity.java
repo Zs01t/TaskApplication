@@ -56,4 +56,24 @@ public class TaskDetailActivity extends AppCompatActivity{
             t.commit();
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Intent inIntent = getIntent();
+        Task tmp = inIntent.getParcelableExtra("taskToBeModified");
+        boolean editMode = true;
+        if (tmp == null) editMode = false;
+        getSupportActionBar().setTitle(editMode ? "Modify existing task" : "Create New Task");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 }

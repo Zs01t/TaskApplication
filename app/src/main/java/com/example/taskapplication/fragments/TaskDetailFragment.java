@@ -66,8 +66,7 @@ public class TaskDetailFragment extends Fragment {
 
         }
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(editMode ? "Modify existing task" : "Create New Task");
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         binding.buttonSave.setText(editMode ? "Confirm changes" : "Save");
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -124,14 +123,7 @@ public class TaskDetailFragment extends Fragment {
         return  view;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            getActivity().finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 
     public void showDatePickerDialog(View view) {
         Calendar cal = Calendar.getInstance();
