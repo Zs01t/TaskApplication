@@ -47,6 +47,7 @@ public class TaskDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
+        //I'm not sure if that's necessary... but the fragment works so...
         super.onCreate(savedInstanceState);
         //attachToParent should be true?
         binding = TaskDetailFragmentBinding.inflate(inflater, container, false);
