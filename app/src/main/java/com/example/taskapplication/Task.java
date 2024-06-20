@@ -56,8 +56,8 @@ public class Task implements Parcelable {
     }
 
 
-    public Task(int id, String mShortName, String mDescription, Date mCreationDate, Date mDueDate, boolean mDone) {
-        this.mId = id;
+    public Task(int mId, String mShortName, String mDescription, Date mCreationDate, Date mDueDate, boolean mDone) {
+        this.mId = mId;
         this.mShortName = mShortName;
         this.mDescription = mDescription;
         this.mCreationDate = mCreationDate;
@@ -123,7 +123,6 @@ public class Task implements Parcelable {
 
     protected Task(Parcel in)
     {
-        this.mId = in.readInt();
         this.mShortName = in.readString();
         this.mDescription = in.readString();
 
@@ -147,7 +146,6 @@ public class Task implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(mId);
         dest.writeString(mShortName);
         dest.writeString(mDescription);
         dest.writeString(mDueDate != null ? mDueDate.toString() : "OPEN ISSUE");

@@ -80,14 +80,14 @@ public class TaskDetailActivity extends AppCompatActivity{
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        taskRepo.updateTask(mCurrentTask);
                     }
                     else
                     {
                         mCurrentTask.setDueDate(dueDate);
-                        taskRepo.addTask(mCurrentTask);
                     }
-                    //finally we can use finish() because the observers are implemented
+                    taskRepo.addTask(mCurrentTask);
+                    //here, it would be better if we called the finish() method,
+                    //but the task list only updates if we recreate the list activity
                     finish();
 
                 }
@@ -97,24 +97,24 @@ public class TaskDetailActivity extends AppCompatActivity{
 
         //reloading current Task if something happens (we rotated the phone) or if you are modifying an existing task
         //the savedInstanceState signals this
-//        if(savedInstanceState != null)
-//        {
-        ((TextView)findViewById(R.id.editText_Name)).setText(mCurrentTask.getShortName());
-        ((TextView)findViewById(R.id.editText_Description)).setText(mCurrentTask.getDescription());
+        if(savedInstanceState != null)
+        {
+            ((TextView)findViewById(R.id.editText_Name)).setText(mCurrentTask.getShortName());
+            ((TextView)findViewById(R.id.editText_Description)).setText(mCurrentTask.getDescription());
 
-        Date date = mCurrentTask.getDueDate();
-        Calendar cal = Calendar.getInstance();
-        if (editMode) {
-            cal.setTime(date);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-            int month = cal.get(Calendar.MONTH) + 1;
-            int year = cal.get(Calendar.YEAR);
-            String stringDate = day + "/" + month + "/" + year;
+            Date date = mCurrentTask.getDueDate();
+            Calendar cal = Calendar.getInstance();
+            if (editMode) {
+                cal.setTime(date);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                int month = cal.get(Calendar.MONTH) + 1;
+                int year = cal.get(Calendar.YEAR);
+                String stringDate = day + "/" + month + "/" + year;
 
-            ((TextView) findViewById(R.id.textView_Date)).setText(stringDate);
+                ((TextView) findViewById(R.id.textView_Date)).setText(stringDate);
+            }
+            ((CheckBox)findViewById(R.id.checkBox_Done)).setChecked(mCurrentTask.isDone());
         }
-        ((CheckBox)findViewById(R.id.checkBox_Done)).setChecked(mCurrentTask.isDone());
-//        }
     }
 
     public void showDatePickerDialog(View view) {
