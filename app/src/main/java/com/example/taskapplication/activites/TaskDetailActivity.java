@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -42,6 +43,7 @@ public class TaskDetailActivity extends AppCompatActivity{
         binding = ActivityTaskDetailBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         //we need it to save or update the database
         taskRepo = new TaskRepositoryRoomImpl(this);
         //we check if we are at this activity because another activity sent an intent
@@ -51,7 +53,13 @@ public class TaskDetailActivity extends AppCompatActivity{
         if (mCurrentTask == null) {
             mCurrentTask = new Task();
             editMode = false;
+
+
         }
+
+        getSupportActionBar().setTitle(editMode ? "Modify existing task" : "Create New Task");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         binding.buttonSave.setText(editMode ? "Confirm changes" : "Save");
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +113,15 @@ public class TaskDetailActivity extends AppCompatActivity{
         binding.textViewDate.setText(stringDate);
         binding.checkBoxDone.setChecked(mCurrentTask.isDone());
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void showDatePickerDialog(View view) {

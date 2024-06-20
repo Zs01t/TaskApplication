@@ -37,6 +37,8 @@ public class TaskListActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        getSupportActionBar().setTitle("Task List"); // for set actionbar title
+
         taskRepo = new TaskRepositoryRoomImpl(this);
 
         binding.taskRecyclerView.setLayoutManager(new LinearLayoutManager(this));
