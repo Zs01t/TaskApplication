@@ -24,6 +24,8 @@ import java.util.List;
 public class TaskListFragment  extends Fragment {
 
     private TaskListFragmentBinding binding;
+
+
     TaskRepository taskRepo;
     private TaskItemRecyclerViewAdapter adapter;
     public TaskListFragment()
@@ -64,6 +66,8 @@ public class TaskListFragment  extends Fragment {
                 startActivity(intent);
             }
         });
+
+
         return  view;
     }
 }
