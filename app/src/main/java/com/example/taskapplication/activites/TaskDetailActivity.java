@@ -63,31 +63,30 @@ public class TaskDetailActivity extends AppCompatActivity{
                 String name = ((EditText)findViewById(R.id.editText_Name)).getText().toString();
                 String desc = ((EditText)findViewById(R.id.editText_Description)).getText().toString();
                 String dueDateInString = ((TextView)findViewById(R.id.textView_Date)).getText().toString();
-                if(!name.isEmpty() && !dueDateInString.isEmpty())
+                if(!name.isEmpty())
                 {
                     mCurrentTask.setShortName(name);
                     mCurrentTask.setDescription(desc);
                     boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
                     mCurrentTask.setDone(isDone);
+
+                    //the date is a string and its format is dd/mm/yyyy
+                    //we need to transform this back to a Date
+                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    try {
+                        mCurrentTask.setDueDate(format.parse(dueDateInString));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     if(editMode)
                     {
-                        //in this case the date is already given so we need to get that value from the date Textview and set it
-                        //the date is a string and its format is dd/mm/yyyy
-                        //we need to transform this back to a Date
-                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        try {
-                            mCurrentTask.setDueDate(format.parse(dueDateInString));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        taskRepo.updateTask(mCurrentTask);
                     }
                     else
                     {
-                        mCurrentTask.setDueDate(dueDate);
+                        taskRepo.addTask(mCurrentTask);
                     }
-                    taskRepo.addTask(mCurrentTask);
-                    //here, it would be better if we called the finish() method,
-                    //but the task list only updates if we recreate the list activity
+                    //finally we can use finish() because the observers are implemented
                     finish();
 
                 }
@@ -95,26 +94,21 @@ public class TaskDetailActivity extends AppCompatActivity{
         });
 
 
-        //reloading current Task if something happens (we rotated the phone) or if you are modifying an existing task
-        //the savedInstanceState signals this
-        if(savedInstanceState != null)
-        {
-            ((TextView)findViewById(R.id.editText_Name)).setText(mCurrentTask.getShortName());
-            ((TextView)findViewById(R.id.editText_Description)).setText(mCurrentTask.getDescription());
+        ((TextView)findViewById(R.id.editText_Name)).setText(mCurrentTask.getShortName());
+        ((TextView)findViewById(R.id.editText_Description)).setText(mCurrentTask.getDescription());
 
-            Date date = mCurrentTask.getDueDate();
-            Calendar cal = Calendar.getInstance();
-            if (editMode) {
-                cal.setTime(date);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                int month = cal.get(Calendar.MONTH) + 1;
-                int year = cal.get(Calendar.YEAR);
-                String stringDate = day + "/" + month + "/" + year;
+        Date date = mCurrentTask.getDueDate();
+        Calendar cal = Calendar.getInstance();
 
-                ((TextView) findViewById(R.id.textView_Date)).setText(stringDate);
-            }
-            ((CheckBox)findViewById(R.id.checkBox_Done)).setChecked(mCurrentTask.isDone());
-        }
+        cal.setTime(date);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int year = cal.get(Calendar.YEAR);
+        String stringDate = day + "/" + month + "/" + year;
+
+        ((TextView) findViewById(R.id.textView_Date)).setText(stringDate);
+        ((CheckBox)findViewById(R.id.checkBox_Done)).setChecked(mCurrentTask.isDone());
+
     }
 
     public void showDatePickerDialog(View view) {
@@ -137,7 +131,7 @@ public class TaskDetailActivity extends AppCompatActivity{
                         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                         try {
                             dueDate = df.parse(selectedDate);
-                            //System.out.println(dueDate.toString());
+
                         } catch (ParseException e) {
                             throw new RuntimeException(e);
                         }
