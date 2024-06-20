@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.taskapplication.R;
 import com.example.taskapplication.Task;
+import com.example.taskapplication.databinding.ActivityTaskDetailBinding;
 import com.example.taskapplication.repositories.TaskRepository;
 import com.example.taskapplication.repositories.TaskRepositoryDatabaseImpl;
 import com.example.taskapplication.repositories.TaskRepositoryRoomImpl;
@@ -29,45 +30,40 @@ import java.util.Locale;
 
 public class TaskDetailActivity extends AppCompatActivity{
 
+    private ActivityTaskDetailBinding binding;
     TaskRepository taskRepo;
-    private Button mSaveButton;
     private Task mCurrentTask;
-    private Calendar calendar;
-    private Date dueDate;
     private boolean editMode = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_detail);
-        //for the datepicker but also for conversions
-        calendar = Calendar.getInstance();
+        binding = ActivityTaskDetailBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
         //we need it to save or update the database
         taskRepo = new TaskRepositoryRoomImpl(this);
-        //implementing the save button functionality
-        mSaveButton = findViewById(R.id.button_save);
         //we check if we are at this activity because another activity sent an intent
         Intent inIntent = getIntent();
-
         //if we came from the task list, then the taskToBeModified is not empty
         mCurrentTask = inIntent.getParcelableExtra("taskToBeModified");
         if (mCurrentTask == null) {
             mCurrentTask = new Task();
             editMode = false;
         }
-        mSaveButton.setText(editMode ? "Confirm changes" : "Save");
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonSave.setText(editMode ? "Confirm changes" : "Save");
+        binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = ((EditText)findViewById(R.id.editText_Name)).getText().toString();
-                String desc = ((EditText)findViewById(R.id.editText_Description)).getText().toString();
-                String dueDateInString = ((TextView)findViewById(R.id.textView_Date)).getText().toString();
+                String name = binding.editTextName.getText().toString();
+                String desc = binding.editTextDescription.getText().toString();
+                String dueDateInString = binding.textViewDate.getText().toString();
                 if(!name.isEmpty())
                 {
                     mCurrentTask.setShortName(name);
                     mCurrentTask.setDescription(desc);
-                    boolean isDone = ((CheckBox)findViewById(R.id.checkBox_Done)).isChecked();
+                    boolean isDone = binding.checkBoxDone.isChecked();
                     mCurrentTask.setDone(isDone);
 
                     //the date is a string and its format is dd/mm/yyyy
@@ -94,8 +90,8 @@ public class TaskDetailActivity extends AppCompatActivity{
         });
 
 
-        ((TextView)findViewById(R.id.editText_Name)).setText(mCurrentTask.getShortName());
-        ((TextView)findViewById(R.id.editText_Description)).setText(mCurrentTask.getDescription());
+        binding.editTextName.setText(mCurrentTask.getShortName());
+        binding.editTextDescription.setText(mCurrentTask.getDescription());
 
         Date date = mCurrentTask.getDueDate();
         Calendar cal = Calendar.getInstance();
@@ -106,15 +102,16 @@ public class TaskDetailActivity extends AppCompatActivity{
         int year = cal.get(Calendar.YEAR);
         String stringDate = day + "/" + month + "/" + year;
 
-        ((TextView) findViewById(R.id.textView_Date)).setText(stringDate);
-        ((CheckBox)findViewById(R.id.checkBox_Done)).setChecked(mCurrentTask.isDone());
+        binding.textViewDate.setText(stringDate);
+        binding.checkBoxDone.setChecked(mCurrentTask.isDone());
 
     }
 
     public void showDatePickerDialog(View view) {
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener()
@@ -125,16 +122,14 @@ public class TaskDetailActivity extends AppCompatActivity{
 
                         String selectedDate = dayOfMonth + "/" + (month+1) + "/" + year;
                         System.out.println(selectedDate);
+                        binding.textViewDate.setText(selectedDate);
 
-                        ((TextView)findViewById(R.id.textView_Date)).setText(selectedDate);
-
-                        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                        try {
-                            dueDate = df.parse(selectedDate);
-
-                        } catch (ParseException e) {
-                            throw new RuntimeException(e);
-                        }
+//                        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+//                        try {
+//                            mCurrentTask.setDueDate(df.parse(selectedDate));
+//                        } catch (ParseException e) {
+//                           throw new RuntimeException(e);
+//                       }
                     }
                 }, year, month, day);
 
