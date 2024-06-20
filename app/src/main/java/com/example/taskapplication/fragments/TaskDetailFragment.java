@@ -106,6 +106,13 @@ public class TaskDetailFragment extends Fragment {
         });
 
 
+        binding.textViewDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(v);
+            }
+        });
+
         binding.editTextName.setText(mCurrentTask.getShortName());
         binding.editTextDescription.setText(mCurrentTask.getDescription());
 
